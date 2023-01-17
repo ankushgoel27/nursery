@@ -40,6 +40,7 @@ jobs:
           POSTMAN_WORKSPACE_ID: ${{ secrets.POSTMAN_WORKSPACE_ID }}
           TERM: dumb
           FERN_DEV_TOKEN: ${{ secrets.FERN_DEV_TOKEN }}
+          FERN_TOKEN: ${{ secrets.FERN_DEV_TOKEN }}
         run: |
           npm config set @fern-api:registry https://registry.npmjs.org
           npm config set //registry.npmjs.org/:_authToken "${{ env.NPM_TOKEN }}"
@@ -54,6 +55,7 @@ jobs:
           POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
           POSTMAN_WORKSPACE_ID: ${{ secrets.POSTMAN_WORKSPACE_ID }}
           FERN_DEV_TOKEN: ${{ secrets.FERN_DEV_TOKEN }}
+          FERN_TOKEN: ${{ secrets.FERN_DEV_TOKEN }}
           TERM: dumb
         run: |
           npm config set @fern-api:registry https://registry.npmjs.org
