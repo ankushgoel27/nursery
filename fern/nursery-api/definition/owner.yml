@@ -26,82 +26,78 @@ types:
           ownerId: $OwnerId.Example1
           data: $CustomOwnerData.Example1
 
-services:
-  http:
+service:
+  auth: false
+  base-path: /owner
+  endpoints:
 
-    OwnerService:
-      auth: false
-      base-path: /owner
-      endpoints:
-
-        create:
-          method: POST
-          path: ""
-          request:
-            name: CreateOwnerRequest
-            body:
-              properties:
-                ownerId: OwnerId
-                data: CustomOwnerData
-          errors:
-            - OwnerAlreadyExistsError
-          examples:
-            - request:
-                ownerId: $OwnerId.Example1
-                data: $CustomOwnerData.Example1
-            - request:
-                ownerId: duplicate-owner-id
-                data: $CustomOwnerData.Example1
-              response:
-                error: OwnerAlreadyExistsError
-
-        get:
-          method: GET
-          path: /{ownerId}
-          path-parameters:
+    create:
+      method: POST
+      path: ""
+      request:
+        name: CreateOwnerRequest
+        body:
+          properties:
             ownerId: OwnerId
-          response: Owner
-          errors:
-            - OwnerNotFoundError
-          examples:
-            - path-parameters:
-                ownerId: $OwnerId.Example1
-              response:
-                body: $Owner.Example1
-            - path-parameters:
-                ownerId: missing-owner-id
-              response:
-                error: OwnerNotFoundError
+            data: CustomOwnerData
+      errors:
+        - OwnerAlreadyExistsError
+      examples:
+        - request:
+            ownerId: $OwnerId.Example1
+            data: $CustomOwnerData.Example1
+        - request:
+            ownerId: duplicate-owner-id
+            data: $CustomOwnerData.Example1
+          response:
+            error: OwnerAlreadyExistsError
 
-        update:
-          method: PUT
-          path: /{ownerId}
-          path-parameters:
-            ownerId: OwnerId
+    get:
+      method: GET
+      path: /{ownerId}
+      path-parameters:
+        ownerId: OwnerId
+      response: Owner
+      errors:
+        - OwnerNotFoundError
+      examples:
+        - path-parameters:
+            ownerId: $OwnerId.Example1
+          response:
+            body: $Owner.Example1
+        - path-parameters:
+            ownerId: missing-owner-id
+          response:
+            error: OwnerNotFoundError
+
+    update:
+      method: PUT
+      path: /{ownerId}
+      path-parameters:
+        ownerId: OwnerId
+      request:
+        name: UpdateOwnerRequest
+        body:
+          properties:
+            data: CustomOwnerData
+      response: Owner
+      errors:
+        - OwnerNotFoundError
+      examples:
+        - path-parameters:
+            ownerId: $OwnerId.Example1
           request:
-            name: UpdateOwnerRequest
+            data: $CustomOwnerData.Example1
+          response:
             body:
-              properties:
-                data: CustomOwnerData
-          response: Owner
-          errors:
-            - OwnerNotFoundError
-          examples:
-            - path-parameters:
-                ownerId: $OwnerId.Example1
-              request:
-                data: $CustomOwnerData.Example1
-              response:
-                body:
-                  ownerId: $OwnerId.Example1
-                  data: $CustomOwnerData.Example1
-            - path-parameters:
-                ownerId: missing-owner-id
-              request:
-                data: $CustomOwnerData.Example1
-              response:
-                error: OwnerNotFoundError
-
+              ownerId: $OwnerId.Example1
+              data: $CustomOwnerData.Example1
+        - path-parameters:
+            ownerId: missing-owner-id
+          request:
+            data: $CustomOwnerData.Example1
+          response:
+            error: OwnerNotFoundError
 
 errors:
   OwnerAlreadyExistsError:

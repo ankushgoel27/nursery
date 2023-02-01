@@ -35,8 +35,7 @@ types:
           ownerId: $owner.OwnerId.Example1
           createdTime: "2022-12-23T10:43:35Z"
           status: $TokenStatus.ActiveExample
-  
-  
+
   TokenStatus:
     union:
       active: {}
@@ -53,113 +52,109 @@ types:
         value:
           type: revoked
 #
-services:
-  http:
+service:
+  auth: false
+  base-path: /tokens
+  endpoints:
 
-    TokenService:
-      auth: false
-      base-path: /tokens
-      endpoints:
-
-        create:
-          method: POST
-          path: /create
-          request:
-            name: CreateTokenRequest
-            body:
-              properties:
-                ownerId: owner.OwnerId
-                prefix:
-                  type: optional<string>
-                  docs: If specified, the token will be <prefix>_<token>
-                description: optional<string>
-          response: CreateTokenResponse
-          errors:
-            - owner.OwnerNotFoundError
-          examples:
-            - request:
-                ownerId: $owner.OwnerId.Example1
-              response:
-                body: $CreateTokenResponse.Example1
-            - request:
-                ownerId: missing-owner-id
-              response:
-                error: owner.OwnerNotFoundError
-
-        getTokenMetadata:
-          method: POST
-          path: /metadata
-          request:
-            name: GetTokenMetadataRequest
-            body:
-              properties:
-                token: string
-          response: TokenMetadata
-          errors:
-            - TokenNotFoundError
-          examples:
-            - request:
-                token: token-value
-              response:
-                body: $TokenMetadata.Example1
-            - request:
-                token: missing-token-value
-              response:
-                error: TokenNotFoundError
-
-
-        # add paging
-        getTokensForOwner:
-          method: GET
-          path: /owner/{ownerId}
-          path-parameters:
+    create:
+      method: POST
+      path: /create
+      request:
+        name: CreateTokenRequest
+        body:
+          properties:
             ownerId: owner.OwnerId
-          response: list<TokenMetadata>
-          errors:
-            - owner.OwnerNotFoundError
-          examples:
-            - path-parameters:
-                ownerId: $owner.OwnerId.Example1
-              response:
-                body:
-                  - $TokenMetadata.Example1
-            - path-parameters:
-                ownerId: missing-owner-id
-              response:
-                error: owner.OwnerNotFoundError
+            prefix:
+              type: optional<string>
+              docs: If specified, the token will be <prefix>_<token>
+            description: optional<string>
+      response: CreateTokenResponse
+      errors:
+        - owner.OwnerNotFoundError
+      examples:
+        - request:
+            ownerId: $owner.OwnerId.Example1
+          response:
+            body: $CreateTokenResponse.Example1
+        - request:
+            ownerId: missing-owner-id
+          response:
+            error: owner.OwnerNotFoundError
 
-        revokeTokenById:
-          method: POST
-          path: /revoke/{tokenId}
-          path-parameters:
-            tokenId: TokenId
-          errors:
-            - TokenNotFoundError
-          examples:
-            - path-parameters:
-                tokenId: $TokenId.Example1
-            - path-parameters:
-                tokenId: missing-token-id
-              response:
-                error: TokenNotFoundError
+    getTokenMetadata:
+      method: POST
+      path: /metadata
+      request:
+        name: GetTokenMetadataRequest
+        body:
+          properties:
+            token: string
+      response: TokenMetadata
+      errors:
+        - TokenNotFoundError
+      examples:
+        - request:
+            token: token-value
+          response:
+            body: $TokenMetadata.Example1
+        - request:
+            token: missing-token-value
+          response:
+            error: TokenNotFoundError
 
-        revokeToken:
-          method: POST
-          path: /revoke
-          request:
-            name: RevokeTokenRequest
+    # add paging
+    getTokensForOwner:
+      method: GET
+      path: /owner/{ownerId}
+      path-parameters:
+        ownerId: owner.OwnerId
+      response: list<TokenMetadata>
+      errors:
+        - owner.OwnerNotFoundError
+      examples:
+        - path-parameters:
+            ownerId: $owner.OwnerId.Example1
+          response:
             body:
-              properties:
-                token: string
-          errors:
-            - TokenNotFoundError
-          examples:
-            - request:
-                token: some-token-value
-            - request:
-                token: missing-token-value
-              response:
-                error: TokenNotFoundError
+              - $TokenMetadata.Example1
+        - path-parameters:
+            ownerId: missing-owner-id
+          response:
+            error: owner.OwnerNotFoundError
+
+    revokeTokenById:
+      method: POST
+      path: /revoke/{tokenId}
+      path-parameters:
+        tokenId: TokenId
+      errors:
+        - TokenNotFoundError
+      examples:
+        - path-parameters:
+            tokenId: $TokenId.Example1
+        - path-parameters:
+            tokenId: missing-token-id
+          response:
+            error: TokenNotFoundError
+
+    revokeToken:
+      method: POST
+      path: /revoke
+      request:
+        name: RevokeTokenRequest
+        body:
+          properties:
+            token: string
+      errors:
+        - TokenNotFoundError
+      examples:
+        - request:
+            token: some-token-value
+        - request:
+            token: missing-token-value
+          response:
+            error: TokenNotFoundError
 
 errors:
   TokenNotFoundError:
