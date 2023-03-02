@@ -34,7 +34,6 @@ jobs:
     steps:
       - checkout
       - run: |
-          npm config set @fern-api:registry https://registry.npmjs.org
           npm config set //registry.npmjs.org/:_authToken $YARN_NPM_AUTH_TOKEN
           npm install -g @fern-api/fern-api-dev
           fern-dev check
@@ -159,6 +158,7 @@ jobs:
       - run: 
           name: fern-dev register --environment Dev
           command: |
+            npm config set //registry.npmjs.org/:_authToken $YARN_NPM_AUTH_TOKEN
             npm install -g @fern-api/fern-api-dev
             fern-dev register-v2 --environment Dev
 
@@ -190,6 +190,7 @@ jobs:
       - run: 
           name: fern-dev register --environment Production
           command: |
+            npm config set //registry.npmjs.org/:_authToken $YARN_NPM_AUTH_TOKEN
             npm install -g @fern-api/fern-api-dev
             fern-dev register-v2 --environment Production
 
@@ -201,6 +202,7 @@ jobs:
       - run: 
           name: fern register latest
           command: |
+            npm config set //registry.npmjs.org/:_authToken $YARN_NPM_AUTH_TOKEN
             npm install -g @fern-api/fern-api-dev
             fern-dev register-v2
 
