@@ -201,8 +201,8 @@ jobs:
       - run: 
           name: fern register latest
           command: |
-            npm install -g fern-api
-            fern register-v2
+            npm install -g @fern-api/fern-api-dev
+            fern-dev register-v2
 
 workflows:
   version: 2
@@ -250,6 +250,7 @@ workflows:
               ignore: /.*/
           context:
             - aws
+            - npm
             - fern-dev
             - github
 
@@ -264,6 +265,7 @@ workflows:
           context:
             - aws
             - fern-prod
+            - npm
             - github
 
       - publish-docker:
