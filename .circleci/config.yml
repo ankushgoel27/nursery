@@ -156,6 +156,11 @@ jobs:
             npm install -g aws-cdk
             cdk deploy -c config=dev-fern.config.json --require-approval never --progress events
           name: cdk deploy
+      - run: 
+          name: fern-dev register --environment Dev
+          command: |
+            npm install -g @fern-api/fern-api-dev
+            fern-dev register-v2 --environment Dev
 
   deploy-prod:
     machine:
@@ -182,6 +187,22 @@ jobs:
             npm install -g aws-cdk
             cdk deploy -c config=prod-fern.config.json --require-approval never --progress events
           name: cdk deploy
+      - run: 
+          name: fern-dev register --environment Production
+          command: |
+            npm install -g @fern-api/fern-api-dev
+            fern-dev register-v2 --environment Production
+
+  register-latest: 
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - checkout
+      - run: 
+          name: fern register latest
+          command: |
+            npm install -g fern-api
+            fern register-v2
 
 workflows:
   version: 2
@@ -254,3 +275,13 @@ workflows:
               only: /.*/
           context:
             - docker-hub
+
+      - register-latest: 
+          filters:
+            branches:
+              only:
+                - main
+          context:
+            - fern-tokens
+          requires:
+            - check
