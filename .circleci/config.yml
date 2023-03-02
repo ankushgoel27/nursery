@@ -251,6 +251,7 @@ workflows:
           context:
             - aws
             - npm
+            - fern-tokens
             - fern-dev
             - github
 
@@ -264,6 +265,7 @@ workflows:
                 - /.*/
           context:
             - aws
+            - fern-tokens
             - fern-prod
             - npm
             - github
