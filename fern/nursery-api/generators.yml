@@ -67,4 +67,5 @@ groups:
           location: pypi
           url: pypi.buildwithfern.com
           package-name: 'fern-nursery'
-          token: ${FERN_DEV_TOKEN}
+          username: fern
+          password: ${FERN_DEV_TOKEN}
