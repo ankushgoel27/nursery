@@ -61,3 +61,10 @@ groups:
           token: ${FERN_DEV_TOKEN}
         config:
           neverThrowErrors: true
+      - name: fernapi/fern-python-sdk
+        version: 0.0.52-3-gd9df38df
+        output:
+          location: pypi
+          url: pypi.buildwithfern.com
+          package-name: 'fern-nursery'
+          token: ${FERN_DEV_TOKEN}
