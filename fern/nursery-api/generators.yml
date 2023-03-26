@@ -62,8 +62,10 @@ groups:
         config:
           neverThrowErrors: true
       - name: fernapi/fern-python-sdk
-        version: 0.0.52-3-gd9df38df
+        version: 0.0.52-9-g88d3df70
         output:
           location: pypi
           url: pypi.buildwithfern.com
           package-name: fern_fern_nursery
+        config:
+          include_union_utils: true
