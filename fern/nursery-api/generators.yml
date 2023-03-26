@@ -62,7 +62,7 @@ groups:
         config:
           neverThrowErrors: true
       - name: fernapi/fern-python-sdk
-        version: 0.0.52-9-g88d3df70
+        version: 0.0.52-10-g3520fb4b
         output:
           location: pypi
           url: pypi.buildwithfern.com
