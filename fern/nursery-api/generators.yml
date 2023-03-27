@@ -40,7 +40,7 @@ groups:
         github:
           repository: fern-api/nursery-postman
       - name: fernapi/fern-python-sdk
-        version: 0.0.52-27-g1cb806ee
+        version: 0.0.52-28-g02904f8e
         output:
           location: pypi
           package-name: fern-nursery
