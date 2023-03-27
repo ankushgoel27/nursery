@@ -39,6 +39,15 @@ groups:
           workspace-id: ${POSTMAN_WORKSPACE_ID}
         github:
           repository: fern-api/nursery-postman
+      - name: fernapi/fern-python-sdk
+        version: 0.0.52-26-gc10478d4
+        output:
+          location: pypi
+          package-name: fern-nursery
+          username: __token__
+          password: ${PYPI_TOKEN}
+        github:
+          repository: fern-api/nursery-python
   internal:
     generators:
       - name: fernapi/fern-java-sdk
