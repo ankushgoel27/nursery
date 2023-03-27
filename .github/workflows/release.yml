@@ -38,6 +38,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
           POSTMAN_WORKSPACE_ID: ${{ secrets.POSTMAN_WORKSPACE_ID }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
           TERM: dumb
           FERN_DEV_TOKEN: ${{ secrets.FERN_DEV_TOKEN }}
           FERN_TOKEN: ${{ secrets.FERN_DEV_TOKEN }}
