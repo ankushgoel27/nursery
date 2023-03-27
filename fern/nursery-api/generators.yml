@@ -40,10 +40,11 @@ groups:
         github:
           repository: fern-api/nursery-postman
       - name: fernapi/fern-python-sdk
-        version: 0.0.52-26-gc10478d4
+        version: 0.0.52-27-g1cb806ee
         output:
           location: pypi
           package-name: fern-nursery
+          url: https://test.pypi.org/legacy/
           username: __token__
           password: ${PYPI_TOKEN}
         github:
