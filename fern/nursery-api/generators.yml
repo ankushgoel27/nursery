@@ -18,6 +18,8 @@ groups:
           token: ${NPM_TOKEN}
         github:
           repository: fern-api/nursery-node
+        config:
+          namespaceExport: Nursery
       - name: fernapi/fern-java-sdk
         version: 0.0.124-2-g58ed4e2
         output:
