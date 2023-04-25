@@ -35,7 +35,7 @@ jobs:
       - checkout
       - run: |
           npm config set //registry.npmjs.org/:_authToken $YARN_NPM_AUTH_TOKEN
-          npm install -g @fern-api/fern-api-dev
+          sudo npm install -g @fern-api/fern-api-dev
           fern-dev check
 
   check:
