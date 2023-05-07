@@ -11,7 +11,7 @@ groups:
   sdks:
     generators:
       - name: fernapi/fern-typescript-sdk
-        version: 0.5.18-rc2-1-g85666546
+        version: 0.5.19-1-gef223230
         output:
           location: npm
           package-name: '@fern-api/nursery'
