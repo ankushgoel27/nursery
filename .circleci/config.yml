@@ -155,12 +155,6 @@ jobs:
             npm install -g aws-cdk
             cdk deploy -c config=dev-fern.config.json --require-approval never --progress events
           name: cdk deploy
-      - run: 
-          name: fern-dev register --environment Dev
-          command: |
-            npm config set //registry.npmjs.org/:_authToken $YARN_NPM_AUTH_TOKEN
-            npm install -g @fern-api/fern-api-dev --prefix=$HOME/.local
-            fern-dev register-v2 --environment Dev
 
   deploy-prod:
     machine:
