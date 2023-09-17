@@ -88,7 +88,7 @@ jobs:
 
   build:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2004:2023.02.1
     environment:
       CIRCLE_TEST_REPORTS: /home/circleci/junit
       CIRCLE_ARTIFACTS: /home/circleci/artifacts
@@ -109,7 +109,7 @@ jobs:
 
   publish-docker:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2004:2023.02.1
       docker_layer_caching: true
     environment:
       CIRCLE_TEST_REPORTS: /home/circleci/junit
@@ -132,7 +132,7 @@ jobs:
 
   deploy-dev:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2004:2023.02.1
     resource_class: medium
     environment:
       CIRCLE_TEST_REPORTS: /home/circleci/junit
@@ -164,7 +164,7 @@ jobs:
 
   deploy-prod:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2004:2023.02.1
     resource_class: medium
     environment:
       CIRCLE_TEST_REPORTS: /home/circleci/junit
@@ -196,7 +196,7 @@ jobs:
 
   register-latest: 
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2004:2023.02.1
     steps:
       - checkout
       - run: 
