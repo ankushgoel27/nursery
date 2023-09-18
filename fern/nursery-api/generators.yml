@@ -10,13 +10,13 @@ groups:
   sdks:
     generators:
       - name: fernapi/fern-java-sdk
-        version: 0.0.124-2-g58ed4e2
+        version: 0.5.7
         output:
           location: maven
           url: maven.buildwithfern.com
           coordinate: com.fern.fern:nursery
       - name: fernapi/fern-python-sdk
-        version: 0.0.52-26-gc10478d4
+        version: 0.4.5
         output:
           location: pypi
           url: pypi.buildwithfern.com
