@@ -156,6 +156,32 @@ jobs:
             cdk deploy -c config=dev-fern.config.json --require-approval never --progress events
           name: cdk deploy
 
+  deploy-dev2:
+    machine:
+      image: ubuntu-2004:2023.02.1
+    resource_class: medium
+    environment:
+      CIRCLE_TEST_REPORTS: /home/circleci/junit
+      CIRCLE_ARTIFACTS: /home/circleci/artifacts
+      _JAVA_OPTIONS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false -Xmx8192m
+      TERM: dumb
+    steps:
+      - attach_workspace: { at: /home/circleci }
+      - restore_cache: { key: 'gradle-wrapper-v2-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}' }
+      - restore_cache: { key: 'unit-test-gradle-cache-v2-{{ checksum "versions.props" }}-{{ checksum "build.gradle" }}' }
+      - aws-cli/setup
+      - run:
+          command: ./gradlew buildDocker
+          name: build docker
+      - run:
+          command: |
+            cd nursery-cdk
+            npm install
+            npm run gen:fern:config dev
+            npm install -g aws-cdk
+            cdk deploy -c config=dev2-fern.config.json --require-approval never --progress events
+          name: cdk deploy
+
   deploy-prod:
     machine:
       image: ubuntu-2004:2023.02.1
@@ -261,6 +287,21 @@ workflows:
             - npm
             - fern-tokens
             - fern-dev
+            - github
+
+      - deploy-dev2:
+          requires: [ compile, unit-test, check, build ]
+          filters:
+            branches:
+              only:
+                - main
+            tags:
+              ignore: /.*/
+          context:
+            - aws
+            - fern-tokens
+            - fern-dev2
+            - npm
             - github
 
       - deploy-prod:

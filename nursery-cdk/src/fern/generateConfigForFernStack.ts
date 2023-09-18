@@ -4,8 +4,9 @@
 
 import {
   EnvironmentInfo,
+  EnvironmentType,
   Environments,
-} from "@fern-fern/fern-cloud-client/model/environments";
+} from "@fern-fern/fern-cloud-sdk/api/resources/environments";
 import axios from "axios";
 import { writeFileSync } from "fs";
 import { NurseryInfraConfig } from "../config";
@@ -28,6 +29,10 @@ async function main() {
     postgresPassword: getEnvVarValueOrThrow("POSTGRES_PASSWORD"),
   };
   const environmentInfo = await getEnvironments(environmentType);
+  if (environmentInfo == null) {
+    throw new Error("Unexpected error: environmentInfo is undefined");
+  }
+
   const config: NurseryInfraConfig = {
     stackName: `nursery-${environmentType}`,
     accountNumber: envVars.awsAccountId,
@@ -73,7 +78,7 @@ function getEnvVarValueOrThrow(environmentVariableName: string): string {
   throw new Error("Missing environment variable: " + environmentVariableName);
 }
 
-async function getEnvironments(environment: string): Promise<EnvironmentInfo> {
+async function getEnvironments(environment: string): Promise<EnvironmentInfo | undefined> {
   const response = await axios(
     "https://raw.githubusercontent.com/fern-api/fern-cloud/main/env-scoped-resources/environments.json",
     {
@@ -85,9 +90,11 @@ async function getEnvironments(environment: string): Promise<EnvironmentInfo> {
   );
   const environments = response.data as Environments;
   if (environment === "prod") {
-    return environments.PROD;
+    return environments[EnvironmentType.Prod];
   } else if (environment === "dev") {
-    return environments.DEV;
+    return environments[EnvironmentType.Dev];
+  } else if (environment === "dev2") {
+    return environments[EnvironmentType.Dev2];
   }
   throw new Error("Encountered unknown environment: " + environment);
 }
