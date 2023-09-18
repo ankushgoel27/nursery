@@ -61,7 +61,7 @@ export class NurseryCdkStack extends Stack {
     );
 
     const snsTopic = new sns.Topic(this, "nursery-sns-topic", {
-      topicName: "CloudwatchEmail",
+      topicName: `CloudwatchEmail-${SERVICE_NAME}`,
     });
     snsTopic.addSubscription(
       new EmailSubscription("founders@buildwithfern.com")
