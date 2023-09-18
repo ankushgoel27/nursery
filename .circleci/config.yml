@@ -188,17 +188,19 @@ jobs:
             npm install -g @fern-api/fern-api-dev --prefix=$HOME/.local
             fern-dev register-v2 --environment Production
 
-  register-latest: 
-    machine:
-      image: ubuntu-2004:2023.02.1
+  generate-sdks:
+    docker:
+      - image: cimg/node:current
+    resource_class: medium
     steps:
       - checkout
-      - run: 
-          name: fern register latest
-          command: |
-            npm config set //registry.npmjs.org/:_authToken $YARN_NPM_AUTH_TOKEN
-            npm install -g @fern-api/fern-api-dev --prefix=$HOME/.local
-            fern-dev register-v2
+      - run:
+          name: Install fern
+          command: sudo npm install -g fern-api
+      - run: |
+          export FERN_TOKEN="${FERN_ORG_TOKEN_PROD}"
+          git_version="$(scripts/git-version.sh)"
+          fern generate --group sdks --version "${git_version}" --log-level debug
 
 workflows:
   version: 2
@@ -235,6 +237,16 @@ workflows:
           context:
             - jfrog
             - aws
+
+      - generate-sdks:
+          filters:
+            branches:
+              only: main
+            tags:
+              only: /.*/
+          context:
+            - fern-tokens
+          requires: [ compile, unit-test, check, build ]
 
       - deploy-dev:
           requires: [ compile, unit-test, check, build ]
@@ -275,14 +287,3 @@ workflows:
               only: /.*/
           context:
             - docker-hub
-
-      - register-latest: 
-          filters:
-            branches:
-              only:
-                - main
-          context:
-            - fern-tokens
-            - npm
-          requires:
-            - check

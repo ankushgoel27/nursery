@@ -7,7 +7,7 @@ groups:
         config:
           mode: server
           serverFrameworks: jersey
-  internal:
+  sdks:
     generators:
       - name: fernapi/fern-java-sdk
         version: 0.0.124-2-g58ed4e2
@@ -15,8 +15,6 @@ groups:
           location: maven
           url: maven.buildwithfern.com
           coordinate: com.fern.fern:nursery
-          username: fern
-          password: ${FERN_DEV_TOKEN}
       - name: fernapi/fern-python-sdk
         version: 0.0.52-26-gc10478d4
         output:
