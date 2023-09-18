@@ -6,6 +6,9 @@ import { ApplicationLoadBalancedFargateService } from "aws-cdk-lib/aws-ecs-patte
 import { ApplicationProtocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { HostedZone } from "aws-cdk-lib/aws-route53";
+import { Alarm } from "aws-cdk-lib/aws-cloudwatch";
+import * as sns from "aws-cdk-lib/aws-sns";
+import * as actions from "aws-cdk-lib/aws-cloudwatch-actions";
 import {
   HttpNamespace,
   IHttpNamespace,
@@ -14,6 +17,7 @@ import {
 } from "aws-cdk-lib/aws-servicediscovery";
 import { Construct } from "constructs";
 import { NurseryInfraConfig } from "./config";
+import { EmailSubscription } from "aws-cdk-lib/aws-sns-subscriptions";
 
 const SERVICE_NAME = "nursery";
 
@@ -54,6 +58,13 @@ export class NurseryCdkStack extends Stack {
       this,
       "ceritificate",
       config.certificateArn
+    );
+
+    const snsTopic = new sns.Topic(this, "nursery-sns-topic", {
+      topicName: "CloudwatchEmail",
+    });
+    snsTopic.addSubscription(
+      new EmailSubscription("founders@buildwithfern.com")
     );
 
     let cloudMapNamespace: IPrivateDnsNamespace | undefined = undefined;
@@ -124,5 +135,17 @@ export class NurseryCdkStack extends Stack {
       path: "/health",
       port: "8080",
     });
+
+    const lbResponseTimeAlarm = new Alarm(
+      this,
+      "nursery-lb-target-response-time-alarm",
+      {
+        alarmName: "Nursery Load Balancer Target Response Time Threshold",
+        metric: fargateService.loadBalancer.metricTargetResponseTime(),
+        threshold: 1,
+        evaluationPeriods: 5,
+      }
+    );
+    lbResponseTimeAlarm.addAlarmAction(new actions.SnsAction(snsTopic));
   }
 }
