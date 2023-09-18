@@ -61,10 +61,10 @@ export class NurseryCdkStack extends Stack {
     );
 
     const snsTopic = new sns.Topic(this, "nursery-sns-topic", {
-      topicName: `CloudwatchEmail-${SERVICE_NAME}`,
+      topicName: `${config.stackName}`,
     });
     snsTopic.addSubscription(
-      new EmailSubscription("founders@buildwithfern.com")
+      new EmailSubscription("support@buildwithfern.com")
     );
 
     let cloudMapNamespace: IPrivateDnsNamespace | undefined = undefined;
