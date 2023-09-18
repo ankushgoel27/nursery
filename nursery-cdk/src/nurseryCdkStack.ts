@@ -140,7 +140,7 @@ export class NurseryCdkStack extends Stack {
       this,
       "nursery-lb-target-response-time-alarm",
       {
-        alarmName: "Nursery Load Balancer Target Response Time Threshold",
+        alarmName: `${config.stackName} Load Balancer Target Response Time Threshold`,
         metric: fargateService.loadBalancer.metricTargetResponseTime(),
         threshold: 1,
         evaluationPeriods: 5,
