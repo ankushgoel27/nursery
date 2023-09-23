@@ -38,6 +38,7 @@ async function main() {
     accountNumber: envVars.awsAccountId,
     region: "us-east-1",
     vpcId: environmentInfo.vpcId,
+    vpcIpv4Cidr: environmentInfo.vpcIpv4Cidr,
     ecsClusterName: environmentInfo.ecsInfo.clusterName,
     logGroupName: environmentInfo.logGroupInfo.logGroupName,
     route53HostedZoneId: environmentInfo.route53Info.hostedZoneId,
