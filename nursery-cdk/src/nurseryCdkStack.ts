@@ -3,7 +3,10 @@ import { Certificate } from "aws-cdk-lib/aws-certificatemanager";
 import { Peer, Port, SecurityGroup, Vpc } from "aws-cdk-lib/aws-ec2";
 import { Cluster, ContainerImage, LogDriver } from "aws-cdk-lib/aws-ecs";
 import { ApplicationLoadBalancedFargateService } from "aws-cdk-lib/aws-ecs-patterns";
-import { ApplicationProtocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import {
+  ApplicationProtocol,
+  HttpCodeTarget,
+} from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { HostedZone } from "aws-cdk-lib/aws-route53";
 import { Alarm } from "aws-cdk-lib/aws-cloudwatch";
@@ -147,5 +150,31 @@ export class NurseryCdkStack extends Stack {
       }
     );
     lbResponseTimeAlarm.addAlarmAction(new actions.SnsAction(snsTopic));
+
+    const lbUnhealthyHostsAlarm = new Alarm(
+      this,
+      "nursery-lb-unhealthy-hosts-alarm",
+      {
+        alarmName: `${config.stackName} Load Balancer Unhealthy Hosts`,
+        metric: fargateService.targetGroup.metricUnhealthyHostCount(),
+        threshold: 1,
+        evaluationPeriods: 5,
+      }
+    );
+    lbUnhealthyHostsAlarm.addAlarmAction(new actions.SnsAction(snsTopic));
+
+    const lbServerErrorsAlarm = new Alarm(
+      this,
+      "nursery-lb-server-errors-count-alarm",
+      {
+        alarmName: `${config.stackName} Load Balancer Server Errors Count`,
+        metric: fargateService.loadBalancer.metricHttpCodeTarget(
+          HttpCodeTarget.TARGET_5XX_COUNT
+        ),
+        threshold: 5,
+        evaluationPeriods: 5,
+      }
+    );
+    lbServerErrorsAlarm.addAlarmAction(new actions.SnsAction(snsTopic));
   }
 }
