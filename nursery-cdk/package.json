@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@fern-fern/fern-cloud-sdk": "0.0.181",
-    "aws-cdk-lib": "2.33.0",
+    "aws-cdk-lib": "2.80.0",
     "axios": "^0.27.2",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.21"
